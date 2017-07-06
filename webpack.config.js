@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = env => {
   return {
@@ -11,7 +12,7 @@ module.exports = env => {
       ]
     },
     output: {
-      path: path.resolve(__dirname, 'public'),
+      path: path.resolve(__dirname, 'public/scripts'),
       filename: 'bundle.js',
       publicPath: '/',
     },
@@ -21,9 +22,7 @@ module.exports = env => {
         './app/components',
       ],
       alias: {
-        // RecipesApp: path.resolve(__dirname, 'app/components/RecipesApp.jsx'),
-        // RecipesBrowse: path.resolve(__dirname, 'app/components/RecipesBrowse.jsx'),
-        // RecipesDetail: path.resolve(__dirname, 'app/components/RecipesDetail.jsx'),
+        // Main: path.resolve(__dirname, 'app/components/Main.jsx'),
       },
       extensions: ['.json', '.js', '.jsx'],
     },
@@ -31,6 +30,7 @@ module.exports = env => {
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
+      new ExtractTextPlugin('../styles/styles.css'),
     ],
     devServer: {
       host: 'localhost',
@@ -40,16 +40,30 @@ module.exports = env => {
       publicPath: '/',
     },
     module: {
-      loaders: [
+      rules: [
         {
-          loaders: ['babel-loader'],
           test: /\.jsx?$/,
-          exclude: /node_modules/,
+          loaders: ['babel-loader'],
+          exclude: /(node_modules)/,
         },
         {
-          loaders: ['style', 'css-loader?modules', 'postcss-loader'],
-          test: /\.css?$/,
-        }
+          test: /\.css$/,
+          use: ['css-hot-loader'].concat(ExtractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: [
+              {
+                loader: 'css-loader',
+                options: {
+                  importLoaders: 1,
+                  modules: true,
+                  sourceMap: true,
+                  localIdentName: '[local]--[hash:base64:5]',
+                },
+              },
+              'postcss-loader',
+            ],
+          })),
+        },
       ],
     },
     devtool: 'cheap-module-eval-source-map'

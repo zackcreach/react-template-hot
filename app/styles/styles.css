@@ -1,0 +1,5 @@
+/* Global styles */
+@import 'global/_global.css';
+
+/* Component styles */
+@import 'components/_Main.css';
