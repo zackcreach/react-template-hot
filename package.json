@@ -2,7 +2,7 @@
   "name": "react-template-hot",
   "author": "Zack Creach",
   "scripts": {
-    "start": "webpack-dev-server --env.dev"
+    "start": "webpack-dev-server --env.dev && webpack"
   },
   "dependencies": {
     "react": "15.6.1",
