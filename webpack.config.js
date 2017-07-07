@@ -30,7 +30,7 @@ module.exports = env => {
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
-      new ExtractTextPlugin('../styles/styles.css'),
+      new ExtractTextPlugin('styles/styles.css'),
     ],
     devServer: {
       host: 'localhost',
@@ -43,23 +43,39 @@ module.exports = env => {
       rules: [
         {
           test: /\.jsx?$/,
+          // babel-loader looks for (and references) .babelrc for presets and plugins
           loaders: ['babel-loader'],
           exclude: /(node_modules)/,
         },
         {
           test: /\.css$/,
-          use: ['css-hot-loader'].concat(ExtractTextPlugin.extract({
+          use: [
+            // run css-hot-loader first before ExtractTextPlugin (by concatenating). Note that the ExtractTextPlugin constrcutor above
+            // must have a filename argument that matches where the stylesheet is pointing to in index.html
+            // In this case, both are pointing to styles/styles.css
+            {
+              loader: 'css-hot-loader',
+              options: {
+                // fileMap option useful for if the styles {filename} differs. Default is fileMap: {filename}
+                // fileMap: 'styles/styles.css',
+              }
+            }
+          ].concat(ExtractTextPlugin.extract({
+            // style loader simply inserts css into dom as style tags
             fallback: 'style-loader',
             use: [
               {
+                // css-loader
                 loader: 'css-loader',
                 options: {
                   importLoaders: 1,
+                  // turning on modules adds unique classes to each component
                   modules: true,
                   sourceMap: true,
                   localIdentName: '[local]--[hash:base64:5]',
                 },
               },
+              // postcss-loader looks for postcss.config.js for additional plugins
               'postcss-loader',
             ],
           })),
