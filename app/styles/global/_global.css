@@ -1,5 +1,5 @@
 body {
-
+ font-size: 100%;
 }
 
 img {
@@ -12,5 +12,5 @@ img {
 }
 
 a {
-
+  text-decoration: none;
 }

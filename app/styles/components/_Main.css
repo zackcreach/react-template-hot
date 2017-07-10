@@ -1,3 +1,16 @@
-.Main {
-  color: #333;
+.content {
+  color: $grey;
+  font-size: 2rem;
+
+  @mixin atMedium {
+    font-size: 10rem;
+  }
+
+  &__bold {
+    font-weight: 100;
+  }
+
+  &__bold:hover {
+    font-weight: 700;
+  }
 }

@@ -1,5 +1,7 @@
 /* Global styles */
 @import 'global/_global.css';
+@import 'global/_mixins.css';
+@import 'global/_variables.css';
 
 /* Component styles */
 @import 'components/_Main.css';

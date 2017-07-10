@@ -2,86 +2,111 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-module.exports = env => {
-  return {
-    entry: {
-      app: [
-        'webpack-dev-server/client?http://localhost:3000', // WebpackDevServer host and port
-        'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
-        './app/app.jsx',
-      ]
-    },
-    output: {
-      path: path.resolve(__dirname, 'public/scripts'),
-      filename: 'bundle.js',
-      publicPath: '/',
-    },
-    resolve: {
-      modules: [
-        'node_modules',
-        './app/components',
-      ],
-      alias: {
-        // Main: path.resolve(__dirname, 'app/components/Main.jsx'),
-      },
-      extensions: ['.json', '.js', '.jsx'],
-    },
-    plugins: [
-      new webpack.HotModuleReplacementPlugin(),
-      new webpack.NamedModulesPlugin(),
-      new webpack.NoEmitOnErrorsPlugin(),
-      new ExtractTextPlugin('styles/styles.css'),
+module.exports = {
+  entry: {
+    app: [
+      'webpack-dev-server/client?http://localhost:3000', // WebpackDevServer host and port
+      'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
+      './app/app.jsx',
+    ]
+  },
+  output: {
+    path: path.resolve(__dirname, 'public'),
+    filename: 'bundle.js',
+    publicPath: '/', // publicPath is what the server is directed to
+  },
+  resolve: {
+    modules: [ // adding components means we can import in component names as-is
+      'node_modules',
+      './app/components',
     ],
-    devServer: {
-      host: 'localhost',
-      port: 3000,
-      hot: true,
-      contentBase: './public',
-      publicPath: '/',
+    alias: { // adding these aliases means we don't need a long address when importing into components (images/test.jpg vs ../../images/test.jpg)
+      images: path.resolve(__dirname, 'app/images/'),
+      styles: path.resolve(__dirname, 'app/styles/'),
     },
-    module: {
-      rules: [
-        {
-          test: /\.jsx?$/,
-          // babel-loader looks for (and references) .babelrc for presets and plugins
-          loaders: ['babel-loader'],
-          exclude: /(node_modules)/,
-        },
-        {
-          test: /\.css$/,
-          use: [
-            // run css-hot-loader first before ExtractTextPlugin (by concatenating). Note that the ExtractTextPlugin constrcutor above
-            // must have a filename argument that matches where the stylesheet is pointing to in index.html
-            // In this case, both are pointing to styles/styles.css
-            {
-              loader: 'css-hot-loader',
-              options: {
-                // fileMap option useful for if the styles {filename} differs. Default is fileMap: {filename}
-                // fileMap: 'styles/styles.css',
-              }
+    extensions: ['.json', '.js', '.jsx', '.css', '.scss', '.jpg', '.jpeg', '.png', '.gif', 'svg'],
+  },
+  plugins: [ // To inject changes when running webpack-dev-server
+    new webpack.HotModuleReplacementPlugin(), // To actually name the modules loaded within the chrome console
+    new webpack.NamedModulesPlugin(), // Don't make/load changes if there's errors
+    new webpack.NoEmitOnErrorsPlugin(), // Extract all css files in the app/styles folder and save as a single file in public/styles/styles.css
+    new ExtractTextPlugin({
+      filename: 'styles/styles.css',
+      ignoreOrder: true, // Useful for CSS modules
+    }),
+    // Disabled as it only adds script tags, does not check for existing tags and keeps adding on
+    // new HtmlWebpackPlugin({
+    //   template: 'public/index.html',
+    //   inject: true,
+    // }),
+  ],
+  devServer: { // Webpack config settings for webpack-dev-server. This can also be broken out into webpack-dev-server.js or server.js, but these parameters will override
+    host: 'localhost',
+    contentBase: './public', // contentBase is where your index.html file is, which in this case is not located in root (default) so we specify './public' instead
+    port: 3000,
+    hot: true, // necessary for hot module replacement plugin, can also be started with the webpack-dev-server --hot flag
+    open: true, // open simply opens the browser to localhost when webpack compiles
+    openPage: '', // openPage fixes a current issue where the "open" attribute opens to localhost:3000/undefined. It's an open issue on Github
+  },
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        loader: 'babel-loader', // babel loader references .babelrc for plugins and presets, interpreting ES6 and react syntax to render correctly on all browsers
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'css-hot-loader', // this loader is a lot like react-hot-loader: it loads new css chunks as they're saved
+            options: {
+              // fileMap: 'styles/styles.css',
             }
-          ].concat(ExtractTextPlugin.extract({
-            // style loader simply inserts css into dom as style tags
-            fallback: 'style-loader',
-            use: [
-              {
-                // css-loader
-                loader: 'css-loader',
-                options: {
-                  importLoaders: 1,
-                  // turning on modules adds unique classes to each component
-                  modules: true,
-                  sourceMap: true,
-                  localIdentName: '[local]--[hash:base64:5]',
-                },
+          }
+        ].concat(ExtractTextPlugin.extract({
+          fallback: 'style-loader', // fallback is style-loader, which directly injects styles into the page (via <style> tags)
+          use: [
+            {
+              loader: 'css-loader', // this loader lets you bring in css files as an import in components
+              options: {
+                importLoaders: 1,
+                modules: true,
+                localIdentName: '[local]--[hash:base64:3]',
               },
-              // postcss-loader looks for postcss.config.js for additional plugins
-              'postcss-loader',
-            ],
-          })),
-        },
-      ],
-    },
-    devtool: 'cheap-module-eval-source-map'
-  }
+            },
+            'postcss-loader',
+          ],
+        })),
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        use: [
+          {
+            loader: 'file-loader', // this loader lets you bring in images as an import in components
+            options: {
+              context: './app/images/',
+              name: 'images/[path][name].[ext]',
+            },
+          }, {
+            loader: 'image-webpack-loader', // this loader optimizes file size
+            options: {
+              mozjpeg: {
+                quality: 85,
+                progressive: true,
+              },
+              pngquant: {
+                quality: '75-90',
+                speed: 3,
+              },
+              optipng: {
+                optimizationLevel: 7,
+              },
+            },
+          },
+        ],
+      },
+    ],
+  },
+  devtool: 'cheap-module-eval-source-map',
 };
