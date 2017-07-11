@@ -71,8 +71,9 @@ module.exports = {
               loader: 'css-loader', // this loader lets you bring in css files as an import in components
               options: {
                 importLoaders: 1,
-                modules: true,
-                localIdentName: '[local]--[hash:base64:3]',
+                // CSS Modules config below; disabled for now in lieu of a single stylesheet (./public/styles/styles.css) using BEM
+                // modules: true,
+                // localIdentName: '[local]--[hash:base64:3]',
               },
             },
             'postcss-loader',

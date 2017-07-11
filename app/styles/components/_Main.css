@@ -1,9 +1,9 @@
-.content {
+.Main {
   color: $grey;
   font-size: 2rem;
 
   @mixin atMedium {
-    font-size: 10rem;
+    font-size: 3rem;
   }
 
   &__bold {
