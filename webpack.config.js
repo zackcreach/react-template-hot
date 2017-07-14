@@ -47,6 +47,7 @@ module.exports = {
     hot: true, // necessary for hot module replacement plugin, can also be started with the webpack-dev-server --hot flag
     open: true, // open simply opens the browser to localhost when webpack compiles
     openPage: '', // openPage fixes a current issue where the "open" attribute opens to localhost:3000/undefined. It's an open issue on Github
+    historyApiFallback: true, // on refresh in a subdirectory, sends any not found page back to / and then react router will pick up and redirect to the right place
   },
   module: {
     rules: [

@@ -1,16 +1,8 @@
 .Main {
-  color: $grey;
   font-size: 2rem;
-
-  @mixin atMedium {
-    font-size: 3rem;
-  }
+  color: blue;
 
   &__bold {
-    font-weight: 100;
-  }
-
-  &__bold:hover {
-    font-weight: 700;
+    font-weight: bold;
   }
 }

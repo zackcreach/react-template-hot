@@ -3,5 +3,8 @@
 @import 'global/_mixins.css';
 @import 'global/_global.css';
 
-/* Component styles */
-@import 'components/_Main.css';
+/* Module styles */
+@import 'modules/_page-section.css';
+
+ /*Component styles */
+ @import 'components/_Main.css';
