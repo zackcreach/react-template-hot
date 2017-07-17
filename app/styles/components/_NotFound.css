@@ -1,0 +1,8 @@
+.NotFound {
+  font-size: 2rem;
+  color: red;
+
+  &__bold {
+    font-weight: bold;
+  }
+}
