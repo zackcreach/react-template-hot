@@ -52,12 +52,12 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.jsx?$/, // regex tests for js or jsx, the ? makes the x optional, meaning it will run through js and jsx scripts, $ indicates end of string
         loader: 'babel-loader', // babel loader references .babelrc for plugins and presets, interpreting ES6 and react syntax to render correctly on all browsers
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/,
+        test: /\.s?css$/, // regex tests for scss or css. the ? after makes the s optional, and the $ indicates end of string
         use: [
           {
             loader: 'css-hot-loader', // this loader is a lot like react-hot-loader: it loads new css chunks as they're saved
