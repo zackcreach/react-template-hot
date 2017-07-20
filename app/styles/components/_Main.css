@@ -5,4 +5,8 @@
   &__bold {
     font-weight: bold;
   }
+
+  &__image {
+    width: 50%;
+  }
 }

@@ -12,7 +12,7 @@ class Main extends Component {
         {/* Use this method for multiple classes with CSS modules (not currently enabled in webpack) */}
         {/* <h1 className={`${S.Main} ${S.Main__bold}`}>Main Component</h1> */}
         <h1 className='Main Main__bold'>Main Component</h1>
-        <img src={test}/>
+        <img className='Main__image' src={test}/>
       </div>
     )
   }
