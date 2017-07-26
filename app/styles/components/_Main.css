@@ -1,12 +1,43 @@
 .Main {
-  font-size: 2rem;
-  color: blue;
 
-  &__bold {
-    font-weight: bold;
+  &__video {
+
   }
 
-  &__image {
-    width: 50%;
+  &__mask {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background: rgba(0, 0, 0, .55);
+    z-index: -1;
   }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    text-align: center;
+  }
+
+  &__title {
+    font-weight: 300;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  &__email-form {
+
+  }
+
+  &__email {
+
+  }
+
+  &__button {
+
+  }
+
+
 }
