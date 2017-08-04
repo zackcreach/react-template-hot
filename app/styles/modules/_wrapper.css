@@ -1,0 +1,12 @@
+.wrapper {
+	margin: auto;
+	max-width: 1100px;
+
+	&--larger {
+		max-width: 1500px;
+	}
+
+	&--smaller {
+		max-width: 800px;
+	}
+}

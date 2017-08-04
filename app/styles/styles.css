@@ -5,6 +5,9 @@
 
 /* Module styles */
 @import 'modules/_page-section.css';
+@import 'modules/_wrapper.css';
+@import 'modules/_row.css';
+@import 'modules/_column.css';
 
  /*Component styles */
  @import 'components/_Main.css';
