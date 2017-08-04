@@ -2,8 +2,8 @@
   "name": "react-template-hot",
   "author": "Zack Creach",
   "scripts": {
-    "start": "NODE_ENV=development webpack-dev-server --progress",
-    "build": "NODE_ENV=production webpack --progress"
+    "start": "webpack-dev-server --progress",
+    "build": "NODE_ENV=production node server.js"
   },
   "dependencies": {
     "react": "15.6.1",

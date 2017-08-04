@@ -2,6 +2,9 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+// for production build, grab the NODE_ENV from the host (e.g. Heroku), otherwise default back to 'development'
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
 module.exports = {
   entry: {
     app: [
@@ -30,9 +33,14 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(), // To actually name the modules loaded within the chrome console
     new webpack.NamedModulesPlugin(), // Don't make/load changes if there's errors
     new webpack.NoEmitOnErrorsPlugin(), // Extract all css files in the app/styles folder and save as a single file in public/styles/styles.css
-    new ExtractTextPlugin({
+    new ExtractTextPlugin({ // Extract individual css files into combined file (see module settings below)
       filename: 'styles/styles.css',
       ignoreOrder: true, // Useful for CSS modules
+    }),
+    new webpack.optimize.UglifyJsPlugin({ // File size savings via minification! Sourcemaps are enabled below, so this is enabled in dev and production
+      compress: {
+        warnings: false
+      },
     }),
     // Disabled as it only adds script tags, does not check for existing tags and keeps adding on
     // new HtmlWebpackPlugin({
@@ -110,5 +118,5 @@ module.exports = {
       },
     ],
   },
-  devtool: 'cheap-module-eval-source-map',
+  devtool: process.env.NODE_ENV === 'production' ? undefined : 'cheap-module-eval-source-map',
 };

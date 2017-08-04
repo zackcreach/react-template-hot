@@ -1,3 +1,6 @@
+public/bundle.js
+public/styles
+public/images
 node_modules/
 .DS_Store
 *.log
