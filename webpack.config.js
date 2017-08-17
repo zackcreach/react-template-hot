@@ -27,7 +27,7 @@ module.exports = {
       images: path.resolve(__dirname, 'app/images/'),
       styles: path.resolve(__dirname, 'app/styles/'),
     },
-    extensions: ['.json', '.js', '.jsx', '.css', '.scss', '.jpg', '.jpeg', '.png', '.gif', 'svg'],
+    extensions: ['.json', '.js', '.jsx', '.css', '.scss', '.jpg', '.jpeg', '.png', '.gif', '.svg'],
   },
   plugins: [ // To inject changes when running webpack-dev-server
     new webpack.HotModuleReplacementPlugin(), // To actually name the modules loaded within the chrome console
@@ -111,6 +111,16 @@ module.exports = {
               },
               optipng: {
                 optimizationLevel: 7,
+              },
+              svgo: {
+                plugins: [
+                  {
+                    removeViewBox: false
+                  },
+                  {
+                    removeEmptyAttrs: false
+                  },
+                ],
               },
             },
           },
