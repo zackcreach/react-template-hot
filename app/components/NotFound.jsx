@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import 'styles/styles';
 
-class NotFound extends Component {
+export default class NotFound extends Component {
   constructor(props) {
     super(props);
   }
@@ -13,5 +13,3 @@ class NotFound extends Component {
     )
   }
 };
-
-export default NotFound;

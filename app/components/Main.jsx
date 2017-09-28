@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import 'styles/styles';
 import test from 'images/test';
 
-class Main extends Component {
+export default class Main extends Component {
   constructor(props) {
     super(props);
   }
@@ -17,5 +17,3 @@ class Main extends Component {
     )
   }
 };
-
-export default Main;
