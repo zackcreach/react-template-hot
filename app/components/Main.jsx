@@ -9,9 +9,7 @@ export default class Main extends Component {
   render() {
     return(
       <div>
-        {/* Use this method for multiple classes with CSS modules (not currently enabled in webpack) */}
-        {/* <h1 className={`${S.Main} ${S.Main__bold}`}>Main Component</h1> */}
-        <h1 className='Main Main__bold'>Main Component</h1>
+        <h1 className='Main Main--bold'>Main Component</h1>
         <img className='Main__image' src={test}/>
       </div>
     )
