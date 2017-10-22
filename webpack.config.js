@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
 
 // for production build, grab the NODE_ENV from the host (e.g. Heroku), otherwise default back to 'development'
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
@@ -43,11 +44,10 @@ module.exports = {
         warnings: false
       },
     }),
-    // Disabled as it only adds script tags, does not check for existing tags and keeps adding on
-    // new HtmlWebpackPlugin({
-    //   template: 'public/index.html',
-    //   inject: true,
-    // }),
+    new HTMLWebpackPlugin({
+      template: './app/index.html',
+      filename: 'index.html',
+    }),
   ],
   devServer: { // Webpack config settings for webpack-dev-server. This can also be broken out into webpack-dev-server.js or server.js, but these parameters will override
     host: 'localhost',
@@ -67,14 +67,7 @@ module.exports = {
       },
       {
         test: /\.s?css$/, // regex tests for scss or css. the ? after makes the s optional, and the $ indicates end of string
-        use: [
-          {
-            loader: 'css-hot-loader', // this loader is a lot like react-hot-loader: it loads new css chunks as they're saved
-            options: {
-              // fileMap: 'styles/styles.css',
-            }
-          }
-        ].concat(ExtractTextPlugin.extract({
+        use: ['css-hot-loader'].concat(ExtractTextPlugin.extract({ // this loader is a lot like react-hot-loader: it loads new css chunks as they're saved
           fallback: 'style-loader', // fallback is style-loader, which directly injects styles into the page (via <style> tags)
           use: [
             {
