@@ -3,8 +3,8 @@ import 'styles/styles';
 import test from 'images/test';
 
 export default class Main extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
   }
   render() {
     return(

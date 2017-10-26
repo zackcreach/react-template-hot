@@ -1,6 +1,4 @@
-public/bundle.js
-public/styles
-public/images
-node_modules/
+public
+node_modules
 .DS_Store
 *.log

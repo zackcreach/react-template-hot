@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import 'styles/styles';
 
 export default class NotFound extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
   }
   render() {
     return(
