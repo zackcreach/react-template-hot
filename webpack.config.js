@@ -117,5 +117,15 @@ module.exports = {
       },
     ],
   },
-  devtool: 'eval-source-map',
+  devtool: process.env.NODE_ENV === 'production' ? undefined : 'cheap-module-source-map',
+};
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports.plugins.push(
+    new UglifyWebpackPlugin({ // File size savings via minification! Sourcemaps are enabled below, so this is enabled in dev and production
+      uglifyOptions: {
+        warnings: false,
+      },
+    }),
+  );
 };
