@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
+const UglifyWebpackPlugin = require('uglifyjs-webpack-plugin');
 
 // for production build, grab the NODE_ENV from the host (e.g. Heroku), otherwise default back to 'development'
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
@@ -38,11 +39,6 @@ module.exports = {
       filename: 'styles/styles.css',
       ignoreOrder: true, // Useful for CSS modules
     }),
-    new webpack.optimize.UglifyJsPlugin({ // File size savings via minification! Sourcemaps are enabled below, so this is enabled in dev and production
-      compress: {
-        warnings: false
-      },
-    }),
     new HTMLWebpackPlugin({
       template: './app/index.html',
       filename: 'index.html',
@@ -51,7 +47,7 @@ module.exports = {
   devServer: { // Webpack config settings for webpack-dev-server. This can also be broken out into webpack-dev-server.js or server.js, but these parameters will override
     host: 'localhost',
     contentBase: './public', // contentBase is where your index.html file is, which in this case is not located in root (default) so we specify './public' instead
-    port: 3000,
+    port: 3333,
     hot: true, // necessary for hot module replacement plugin, can also be started with the webpack-dev-server --hot flag
     open: true, // open simply opens the browser to localhost when webpack compiles
     openPage: '', // openPage fixes a current issue where the "open" attribute opens to localhost:3000/undefined. It's an open issue on Github
@@ -121,5 +117,5 @@ module.exports = {
       },
     ],
   },
-  devtool: process.env.NODE_ENV === 'production' ? undefined : 'cheap-module-eval-source-map',
+  devtool: 'eval-source-map',
 };
