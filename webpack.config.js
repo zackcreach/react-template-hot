@@ -5,7 +5,7 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 const UglifyWebpackPlugin = require('uglifyjs-webpack-plugin');
 
 // for production build, grab the NODE_ENV from the host (e.g. Heroku), otherwise default back to 'development'
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+process.env.NODE_ENV = process.env.NODE_ENV || 'developments';
 
 module.exports = {
   entry: {
@@ -31,11 +31,8 @@ module.exports = {
     },
     extensions: ['.json', '.js', '.jsx', '.css', '.scss', '.jpg', '.jpeg', '.png', '.gif', '.svg'],
   },
-  plugins: [ // To inject changes when running webpack-dev-server
-    new webpack.HotModuleReplacementPlugin(), // To actually name the modules loaded within the chrome console
-    new webpack.NamedModulesPlugin(), // Don't make/load changes if there's errors
-    new webpack.NoEmitOnErrorsPlugin(), // Extract all css files in the app/styles folder and save as a single file in public/styles/styles.css
-    new ExtractTextPlugin({ // Extract individual css files into combined file (see module settings below)
+  plugins: [ 
+    new ExtractTextPlugin({ // Extract all css files in the app/styles folder and save as a single file in public/styles/styles.css
       filename: 'styles/styles.css',
       ignoreOrder: true, // Useful for CSS modules
     }),
@@ -52,6 +49,7 @@ module.exports = {
     open: true, // open simply opens the browser to localhost when webpack compiles
     openPage: '', // openPage fixes a current issue where the "open" attribute opens to localhost:3000/undefined. It's an open issue on Github
     historyApiFallback: true, // on refresh in a subdirectory, sends any not found page back to / and then react router will pick up and redirect to the right place
+    overlay: true,
   },
   module: {
     rules: [
@@ -127,5 +125,12 @@ if (process.env.NODE_ENV === 'production') {
         warnings: false,
       },
     }),
+  );
+};
+
+if (process.env.NODE_ENV === 'development') {
+  module.exports.plugins.push(
+    new webpack.HotModuleReplacementPlugin(), // To inject changes when running webpack-dev-server
+    new webpack.NamedModulesPlugin(), // To actually name the modules loaded within the chrome console
   );
 };
