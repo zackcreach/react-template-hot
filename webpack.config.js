@@ -132,5 +132,13 @@ if (process.env.NODE_ENV === 'development') {
   module.exports.plugins.push(
     new webpack.HotModuleReplacementPlugin(), // To inject changes when running webpack-dev-server
     new webpack.NamedModulesPlugin(), // To actually name the modules loaded within the chrome console
+    new BrowserSyncPlugin({
+      server: { baseDir: 'public', },
+      port: 3333,
+      proxy: 8090,
+      notify: true,
+      open: true,
+      files: './public/**/*',
+    }),
   );
 };
